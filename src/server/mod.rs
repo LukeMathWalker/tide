@@ -277,7 +277,8 @@ impl<State: Send + Sync + 'static> Server<State> {
     ///
     /// This lower-level method lets you host a Tide application within an HTTP
     /// server of your choice, via the `http_service` interface crate.
-    pub fn into_http_service(self) -> Service<State> {
+    pub fn into_http_service(mut self) -> Service<State> {
+        self.router.add_default_handlers();
         Service {
             router: Arc::new(self.router),
             state: Arc::new(self.state),
